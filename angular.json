@@ -22,7 +22,9 @@
               "src/styles.css"
             ],
             "define": {
-              "GROQ_API_KEY_COMPLEX": "GROQ_API_KEY_COMPLEX_PLACEHOLDER"
+              "GROQ_API_KEY_COMPLEX": "GROQ_API_KEY_COMPLEX_PLACEHOLDER",
+              "SUPABASE_URL": "SUPABASE_URL_PLACEHOLDER",
+              "SUPABASE_ANON_KEY": "SUPABASE_ANON_KEY_PLACEHOLDER"
             }
           },
           "configurations": {
