@@ -5,7 +5,18 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { execSync } from 'child_process';
 
-// Load .env.local if present
+// Function to clean environment variable string (strips \r, \n, trailing quotes & whitespace)
+const clean = (val) => {
+  if (!val) return '';
+  let str = val.replace(/[\r\n]/g, '').trim();
+  // Strip outer quotes if accidentally included in environment variable settings
+  if ((str.startsWith('"') && str.endsWith('"')) || (str.startsWith("'") && str.endsWith("'"))) {
+    str = str.slice(1, -1);
+  }
+  return str.trim();
+};
+
+// Load .env.local if present locally
 if (existsSync('.env.local')) {
   const envConfig = readFileSync('.env.local', 'utf-8');
   envConfig.split('\n').forEach(line => {
@@ -13,7 +24,7 @@ if (existsSync('.env.local')) {
     if (trimmed && !trimmed.startsWith('#')) {
       const [key, ...valueParts] = trimmed.split('=');
       if (key && valueParts.length > 0) {
-        process.env[key.trim()] = valueParts.join('=').trim();
+        process.env[key.trim()] = clean(valueParts.join('='));
       }
     }
   });
@@ -22,19 +33,21 @@ if (existsSync('.env.local')) {
 const angularJsonPath = './angular.json';
 const angularJson = readFileSync(angularJsonPath, 'utf-8');
 
-const complexKey = process.env.GROQ_API_KEY_COMPLEX || '';
-const supabaseUrl = process.env.SUPABASE_URL || '';
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || '';
+const complexKey = clean(process.env.GROQ_API_KEY_COMPLEX);
+const supabaseUrl = clean(process.env.SUPABASE_URL);
+const supabaseAnonKey = clean(process.env.SUPABASE_ANON_KEY);
 
-// Replace placeholders with actual quoted values
+// Safely format as JSON string literal for angular.json define
+const formatDefine = (val) => JSON.stringify(JSON.stringify(val));
+
 const updated = angularJson
-  .replace('"GROQ_API_KEY_COMPLEX_PLACEHOLDER"', `"\\"${complexKey}\\""`)
-  .replace('"SUPABASE_URL_PLACEHOLDER"', `"\\"${supabaseUrl}\\""`)
-  .replace('"SUPABASE_ANON_KEY_PLACEHOLDER"', `"\\"${supabaseAnonKey}\\""`);
+  .replace('"GROQ_API_KEY_COMPLEX_PLACEHOLDER"', formatDefine(complexKey))
+  .replace('"SUPABASE_URL_PLACEHOLDER"', formatDefine(supabaseUrl))
+  .replace('"SUPABASE_ANON_KEY_PLACEHOLDER"', formatDefine(supabaseAnonKey));
 
 // Write the updated angular.json
 writeFileSync(angularJsonPath, updated, 'utf-8');
-console.log('✓ Environment variables (Groq & Supabase) injected into angular.json');
+console.log('✓ Environment variables (Groq & Supabase) injected cleanly into angular.json');
 
 // Run the Angular build
 try {
