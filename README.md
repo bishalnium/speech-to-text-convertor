@@ -6,7 +6,7 @@ Built with **Angular 21** and **Tailwind CSS**. No backend required.
 
 ## Features
 
-- **High-accuracy transcription** — Uses `whisper-large-v3` for reliable speech-to-text
+- **High-accuracy transcription** — Uses `whisper-large-v3-turbo` for reliable speech-to-text
 - **One-tap recording** — Click to record, click to stop and transcribe
 - **Copy to clipboard** — Quickly copy the transcript text
 - **Responsive UI** — Clean, modern design with Tailwind CSS
@@ -16,7 +16,7 @@ Built with **Angular 21** and **Tailwind CSS**. No backend required.
 
 - Angular 21 (standalone components, signals)
 - Tailwind CSS 4
-- Groq API (Whisper Large V3)
+- Groq API (Whisper Large V3 Turbo)
 
 ## Run Locally
 

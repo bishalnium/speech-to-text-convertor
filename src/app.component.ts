@@ -172,7 +172,7 @@ import { HistoryService, HistoryItem } from './services/history.service';
             }
 
             <span class="text-xs text-slate-400 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 hidden sm:inline-block">
-              Whisper Large v3
+              Whisper Large v3 Turbo
             </span>
           </div>
         </header>

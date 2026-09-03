@@ -7,7 +7,7 @@ declare const GROQ_API_KEY_COMPLEX: string;
 })
 export class GroqService {
   private apiUrl = 'https://api.groq.com/openai/v1/audio/transcriptions';
-  private modelName = 'whisper-large-v3';
+  private modelName = 'whisper-large-v3-turbo';
   private apiKey = GROQ_API_KEY_COMPLEX;
 
   async transcribeAudio(audioInput: Blob | File, filename?: string): Promise<string> {
